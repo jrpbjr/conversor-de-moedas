@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import ConversorMoedas from './Conversor-moedas';
 
-it('renders without crashing', () => {
+it('deve renderizar o componente sem erros', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(<ConversorMoedas />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
