@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import ConversorMoedas from './Conversor-moedas';
 import * as serviceWorker from './serviceWorker';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 ReactDOM.render(<ConversorMoedas />, document.getElementById('root'));
 
