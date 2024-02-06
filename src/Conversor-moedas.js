@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState}  from 'react';
 import './Conversor-moedas.css';
 import { Jumbotron, Button, Form, Col, Spinner, Alert, Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,6 +7,33 @@ import ListarMoedas from './Listar-moedas';
 
 
 function ConversorMoedas() {
+
+  const [valor, setValor] =useState('1');
+  const [moedaDe, setMoedaDe] = useState('BRL');
+  const [moedaPara, setMoedaPara] = useState('USD');
+  const [exibirSpinner, setExibirSpinner] = useState(false);
+  const [formValidado, setFormValidado] = useState(false);
+
+  function handleValor(event) {
+    setValor(event.target.value.replace(/\D/g, ''));
+  }
+
+  function handleMoedaDe(event) {
+    setMoedaDe(event.target.value);
+  }
+
+  function handleMoedaPara(event) {
+    setMoedaPara(event.target.value);
+  }
+
+  function converter(event){
+    event.preventDefault();
+    setFormValidado(true);
+    if (event.currentTarget.checkValidity() === true){
+      //TODO implementar a chamada ao FIxer.io
+    }
+  }
+
   return (
     <div>
       <h1>Conversor de moedas</h1>
@@ -14,36 +41,42 @@ function ConversorMoedas() {
         Erro obtendo dados de conversão, tente novamente.
       </Alert>
       <Jumbotron>
-        <Form>
+      <Form onSubmit={converter} noValidate validated={formValidado}>
           <Form.Row>
-            <Col sm= "3">
-              <Form.Control placeholder='0' value={1} required />
+            <Col sm="3">
+              <Form.Control
+                placeholder="0"
+                value={valor}
+                onChange={handleValor}
+                required />
             </Col>
-
-            <Col sm= "3">
-              <Form.Control as="select">
-                  <ListarMoedas/>
-                </Form.Control>
+            <Col sm="3">
+              <Form.Control as="select"
+                value={moedaDe}
+                onChange={handleMoedaDe}>
+                <ListarMoedas />
+              </Form.Control>
             </Col>
-
-            <Col sm= "1" className='text-center' style={{paddingTop:'5px'}}>
+            <Col sm="1" className="text-center" style={{paddingTop:'5px'}}>
               <FontAwesomeIcon icon={faAngleDoubleRight} />
             </Col>
-
-            <Col sm= "3">
-            <Form.Control as="select">
-                  <ListarMoedas/>
-                </Form.Control>
+            <Col sm="3">
+              <Form.Control as="select"
+                value={moedaPara}
+                onChange={handleMoedaPara}>
+                <ListarMoedas />
+              </Form.Control>
             </Col>
-
-            <Col sm= "2">
-              <Button variant='success' type='submit'>
-                <Spinner animation='border' size='sm'/>
-                Converter
+            <Col sm="2">
+              <Button variant="success" type="submit" data-testid="btn-converter">
+                <span className={exibirSpinner ? null : 'hidden'}>
+                  <Spinner animation="border" size="sm" />
+                </span>
+                <span className={exibirSpinner ? 'hidden' : null}>
+                  Converter
+                </span>
               </Button>
-            </Col>          
-            
-            
+            </Col>
           </Form.Row>
         </Form>
         <Modal show={false}>
