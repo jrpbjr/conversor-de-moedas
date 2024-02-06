@@ -3,6 +3,7 @@ import './Conversor-moedas.css';
 import { Jumbotron, Button, Form, Col, Spinner, Alert, Modal} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDoubleRight } from '@fortawesome/free-solid-svg-icons';
+import ListarMoedas from './Listar-moedas';
 
 
 function ConversorMoedas() {
@@ -21,6 +22,7 @@ function ConversorMoedas() {
 
             <Col sm= "3">
               <Form.Control as="select">
+                  <ListarMoedas/>
                 </Form.Control>
             </Col>
 
@@ -30,6 +32,7 @@ function ConversorMoedas() {
 
             <Col sm= "3">
             <Form.Control as="select">
+                  <ListarMoedas/>
                 </Form.Control>
             </Col>
 
