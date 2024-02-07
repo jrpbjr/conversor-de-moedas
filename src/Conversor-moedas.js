@@ -18,6 +18,7 @@ function ConversorMoedas() {
   const [formValidado, setFormValidado] = useState(false);
   const [exibirModal, setExibirModal] = useState(false);
   const [resultadoConversao, setResultadoConversao] = useState('');
+  const [exibirMsgErro, setExibirMsgErro] = useState(false);
 
   function handleValor(event) {
     setValor(event.target.value.replace(/\D/g, ''));
@@ -39,18 +40,23 @@ function ConversorMoedas() {
     setExibirModal(false);
   }
 
-  function converter(event){
+  function converter(event) {
     event.preventDefault();
     setFormValidado(true);
-    if (event.currentTarget.checkValidity() === true){
+    if (event.currentTarget.checkValidity() === true) {
       setExibirSpinner(true);
       axios.get(FIXER_URL)
-      .then(res => {
-        const cotacao = obterCotacao(res.data);       
-          setResultadoConversao(`${valor} ${moedaDe} = ${cotacao} ${moedaPara}`);
-          setExibirModal(true);
-          setExibirSpinner(false);
-      })
+        .then(res => {
+          const cotacao = obterCotacao(res.data);
+          if (cotacao) {
+            setResultadoConversao(`${valor} ${moedaDe} = ${cotacao} ${moedaPara}`);
+            setExibirModal(true);
+            setExibirSpinner(false);
+            setExibirMsgErro(false);
+          } else {
+            exibirErro();
+          }
+        }).catch(err => exibirErro());
     }
   }
   
@@ -65,10 +71,15 @@ function ConversorMoedas() {
     return cotacao.toFixed(2);
   }
 
+  function exibirErro() {
+    setExibirMsgErro(true);
+    setExibirSpinner(false);
+  }
+
   return (
     <div>
       <h1>Conversor de moedas</h1>
-      <Alert variant='danger' show={false}>
+      <Alert variant='danger' show={exibirMsgErro}>
         Erro obtendo dados de conversão, tente novamente.
       </Alert>
       <Jumbotron>
