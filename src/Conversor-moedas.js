@@ -13,6 +13,8 @@ function ConversorMoedas() {
   const [moedaPara, setMoedaPara] = useState('USD');
   const [exibirSpinner, setExibirSpinner] = useState(false);
   const [formValidado, setFormValidado] = useState(false);
+  const [exibirModal, setExibirModal] = useState(false);
+  const [resultadoConversao, setResultadoConversao] = useState('');
 
   function handleValor(event) {
     setValor(event.target.value.replace(/\D/g, ''));
@@ -26,11 +28,20 @@ function ConversorMoedas() {
     setMoedaPara(event.target.value);
   }
 
+  function handleFecharModal(event){
+    setValor('1');
+    setMoedaDe('BRL');
+    setMoedaPara('USD');
+    setFormValidado(false);
+    setExibirModal(false);
+  }
+
   function converter(event){
     event.preventDefault();
     setFormValidado(true);
     if (event.currentTarget.checkValidity() === true){
       //TODO implementar a chamada ao FIxer.io
+      setExibirModal(true);
     }
   }
 
@@ -79,20 +90,18 @@ function ConversorMoedas() {
             </Col>
           </Form.Row>
         </Form>
-        <Modal show={false}>
+        <Modal show={exibirModal} onHide={handleFecharModal} data-testid="modal">
           <Modal.Header closeButton>
             <Modal.Title>Conversão</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Resultado da conversão aqui ...
+            {resultadoConversao}
           </Modal.Body>
           <Modal.Footer>
-            <Button variant='success'>
+            <Button variant="success" onClick={handleFecharModal}>
               Nova conversão
             </Button>
           </Modal.Footer>
-
-
         </Modal>
       </Jumbotron>
     </div>
